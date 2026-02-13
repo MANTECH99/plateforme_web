@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile fixed header offset (reliable, non-JIT dependent) */
+:root {
+    --mobile-header-offset: calc(124px + env(safe-area-inset-top));
+}
+
+@media (min-width: 768px) {
+    :root {
+        --mobile-header-offset: 0px;
+    }
+}
+
+.app-shell-main {
+    padding-top: var(--mobile-header-offset);
+}

@@ -35,7 +35,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="pt-[calc(124px+env(safe-area-inset-top))] pb-24 md:pt-0 md:pb-0">
+            <main class="app-shell-main pb-24 md:pb-0">
                 <div class="mx-auto w-full max-w-md px-4 md:max-w-7xl md:px-6 lg:px-8">
                     {{ $slot }}
                 </div>
