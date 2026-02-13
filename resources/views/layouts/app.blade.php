@@ -16,7 +16,7 @@
 
         <style>
             /* Fallback offset for fixed mobile header (works even without Vite rebuild) */
-            :root { --mobile-header-offset: calc(76px + env(safe-area-inset-top)); }
+            :root { --mobile-header-offset: calc(70px + env(safe-area-inset-top)); }
             @media (min-width: 768px) { :root { --mobile-header-offset: 0px; } }
             .app-shell-main { padding-top: var(--mobile-header-offset); }
         </style>
