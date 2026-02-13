@@ -4,7 +4,7 @@
 
 /* Mobile fixed header offset (reliable, non-JIT dependent) */
 :root {
-    --mobile-header-offset: calc(84px + env(safe-area-inset-top));
+    --mobile-header-offset: calc(76px + env(safe-area-inset-top));
 }
 
 @media (min-width: 768px) {
