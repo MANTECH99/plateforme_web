@@ -35,8 +35,8 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="pt-[76px] pb-24 md:pt-0 md:pb-0">
-                <div class="mx-auto w-full max-w-md px-4 md:max-w-7xl md:px-6 lg:px-8">
+            <main class="pt-[96px] pb-24 md:pt-0 md:pb-0">
+                <div class="mx-auto w-full max-w-md px-4 pt-2 md:max-w-7xl md:px-6 md:pt-0 lg:px-8">
                     {{ $slot }}
                 </div>
             </main>
