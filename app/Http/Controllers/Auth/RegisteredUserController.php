@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\House;
 use App\Models\Personnel;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -31,38 +29,10 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $baseRules = [
-            'role' => ['required', Rule::in([User::ROLE_PERSONNEL, User::ROLE_HOUSE])],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:30'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ];
-
-        $role = (string) $request->input('role');
-        $extraRules = [];
-
-        if ($role === User::ROLE_PERSONNEL) {
-            $extraRules = [
-                'photo' => ['nullable', 'image', 'max:2048'],
-                'job_title' => ['required', 'string', 'max:255'],
-                'experience_years' => ['required', 'integer', 'min:0', 'max:80'],
-                'description' => ['nullable', 'string', 'max:5000'],
-                'availability' => ['required', 'string', 'max:255'],
-                'city' => ['required', 'string', 'max:255'],
-                'desired_salary' => ['nullable', 'integer', 'min:0'],
-            ];
-        }
-
-        if ($role === User::ROLE_HOUSE) {
-            $extraRules = [
-                'house_city' => ['nullable', 'string', 'max:255'],
-            ];
-        }
-
-        $validated = $request->validate($baseRules + $extraRules);
+        $validated = $request->validated();
+        $role = (string) ($validated['role'] ?? $request->input('role'));
 
         $user = DB::transaction(function () use ($request, $validated, $role) {
             $user = User::create([
