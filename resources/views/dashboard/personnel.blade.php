@@ -30,6 +30,13 @@
                             <div class="text-xs text-gray-600">{{ $personnel->job_title }} • {{ $personnel->city }} • {{ $personnel->experience_years }} ans</div>
                         </div>
                     </div>
+
+                    <div class="mt-4">
+                        <a href="{{ route('personnel.profile.edit') }}"
+                           class="inline-flex w-full items-center justify-center rounded-[15px] bg-[#0d6efd] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0b5ed7]">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i> Modifier mon profil
+                        </a>
+                    </div>
                 </div>
             @else
                 <div class="mt-4 rounded-[15px] bg-amber-50 p-4 text-sm text-amber-800">

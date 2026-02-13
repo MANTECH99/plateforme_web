@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:personnel')->prefix('personnel')->name('personnel.')->group(function () {
         Route::get('/dashboard', [PersonnelController::class, 'dashboard'])->name('dashboard');
+        Route::get('/profile', [PersonnelController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/profile', [PersonnelController::class, 'updateProfile'])->name('profile.update');
     });
 
     Route::middleware('role:house')->prefix('house')->name('house.')->group(function () {

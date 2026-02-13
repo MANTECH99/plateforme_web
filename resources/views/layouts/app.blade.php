@@ -19,6 +19,17 @@
     </head>
     <body class="font-sans antialiased bg-[#f8f9fa]">
         <div class="min-h-screen">
+            <div class="md:hidden fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200 shadow-sm">
+                <div class="mx-auto max-w-md px-4 py-3">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm font-semibold text-gray-900">
+                            {{ config('app.name', 'Gestion placement') }}
+                        </div>
+                        <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-[#0d6efd]">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="hidden md:block">
                 @include('layouts.navigation')
             </div>
@@ -33,7 +44,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="pb-24 md:pb-0">
+            <main class="pt-14 pb-24 md:pt-0 md:pb-0">
                 <div class="mx-auto w-full max-w-md px-4 md:max-w-7xl md:px-6 lg:px-8">
                     {{ $slot }}
                 </div>
