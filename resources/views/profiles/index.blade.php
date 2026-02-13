@@ -15,20 +15,20 @@
             <div class="grid grid-cols-1 gap-3">
                 <div>
                     <label class="text-xs font-semibold text-gray-700">Recherche</label>
-                    <input name="q" value="{{ $q }}" placeholder="Nom, métier, ville..."
+                    <input id="filter-q" name="q" value="{{ $q }}" placeholder="Nom, métier, ville..."
                         class="mt-1 w-full rounded-[15px] border-gray-300 text-sm shadow-sm focus:border-[#0d6efd] focus:ring-[#0d6efd]"
                     />
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs font-semibold text-gray-700">Métier</label>
-                        <input name="job" value="{{ $job }}" placeholder="Ex: nounou"
+                        <input id="filter-job" name="job" value="{{ $job }}" placeholder="Ex: nounou"
                             class="mt-1 w-full rounded-[15px] border-gray-300 text-sm shadow-sm focus:border-[#0d6efd] focus:ring-[#0d6efd]"
                         />
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-700">Ville</label>
-                        <input name="city" value="{{ $city }}" placeholder="Ex: Dakar"
+                        <input id="filter-city" name="city" value="{{ $city }}" placeholder="Ex: Dakar"
                             class="mt-1 w-full rounded-[15px] border-gray-300 text-sm shadow-sm focus:border-[#0d6efd] focus:ring-[#0d6efd]"
                         />
                     </div>
@@ -36,7 +36,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs font-semibold text-gray-700">Certifié</label>
-                        <select name="certified"
+                        <select id="filter-certified" name="certified"
                             class="mt-1 w-full rounded-[15px] border-gray-300 text-sm shadow-sm focus:border-[#0d6efd] focus:ring-[#0d6efd]"
                         >
                             <option value="" @selected($certified === '')>Tous</option>
@@ -53,41 +53,41 @@
             </div>
         </form>
 
-        <div class="mt-4 space-y-3">
-            @foreach($personnels as $p)
-                <a href="{{ route('house.profiles.show', $p) }}" class="block rounded-[15px] bg-white p-4 shadow-sm hover:shadow transition">
-                    <div class="flex items-center gap-3">
-                        <div class="h-12 w-12 overflow-hidden rounded-full bg-gray-200 shrink-0">
-                            @if($p->photo_path)
-                                <img class="h-full w-full object-cover" src="{{ asset('storage/'.$p->photo_path) }}" alt="Photo" />
-                            @endif
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-center gap-2">
-                                <div class="truncate text-sm font-semibold text-gray-900">{{ $p->user->name }}</div>
-                                @if($p->certified)
-                                    <span class="inline-flex items-center rounded-full bg-[#28a745]/10 px-2 py-0.5 text-xs font-semibold text-[#28a745]">
-                                        <i class="fa-solid fa-badge-check mr-1"></i> Certifié
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center rounded-full bg-[#6c757d]/10 px-2 py-0.5 text-xs font-semibold text-[#6c757d]">
-                                        Non certifié
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="mt-1 text-xs text-gray-600">
-                                {{ $p->job_title }} • {{ $p->city }} • {{ $p->experience_years }} ans
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-gray-300"></i>
-                    </div>
-                </a>
-            @endforeach
-        </div>
-
-        <div class="mt-4">
-            {{ $personnels->links() }}
+        <div id="profiles-results" class="mt-4">
+            @include('profiles.partials.results', ['personnels' => $personnels])
         </div>
     </div>
+
+    <script>
+        (() => {
+            const form = document.querySelector('form');
+            const target = document.getElementById('profiles-results');
+            const q = document.getElementById('filter-q');
+            const job = document.getElementById('filter-job');
+            const city = document.getElementById('filter-city');
+            const certified = document.getElementById('filter-certified');
+
+            let timer = null;
+            async function refresh() {
+                const url = new URL(window.location.href);
+                const params = new URLSearchParams(new FormData(form));
+                url.search = params.toString();
+
+                const res = await fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                if (!res.ok) return;
+                const html = await res.text();
+                target.innerHTML = html;
+                window.history.replaceState({}, '', url.toString());
+            }
+
+            function schedule() {
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(refresh, 250);
+            }
+
+            [q, job, city].forEach((el) => el && el.addEventListener('input', schedule));
+            certified && certified.addEventListener('change', schedule);
+        })();
+    </script>
 </x-app-layout>
 

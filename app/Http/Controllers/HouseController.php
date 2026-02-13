@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Connection;
 use App\Models\Personnel;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -20,7 +21,7 @@ class HouseController extends Controller
         ]);
     }
 
-    public function profiles(Request $request): View
+    public function profiles(Request $request): View|Response
     {
         $job = $request->string('job')->toString();
         $city = $request->string('city')->toString();
@@ -49,6 +50,10 @@ class HouseController extends Controller
         }
 
         $personnels = $query->latest()->paginate(10)->withQueryString();
+
+        if ($request->ajax()) {
+            return response()->view('profiles.partials.results', compact('personnels'));
+        }
 
         return view('profiles.index', compact('personnels', 'job', 'city', 'certified', 'q'));
     }
