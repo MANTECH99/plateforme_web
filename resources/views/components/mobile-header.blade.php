@@ -11,10 +11,11 @@
     }
 @endphp
 
-<header class="md:hidden fixed top-0 left-0 w-full z-50">
-    <div class="bg-white/80 backdrop-blur border-b border-gray-200 shadow-sm">
-        <div class="mx-auto max-w-md px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
-            <div class="flex items-center justify-between gap-3">
+<header class="md:hidden fixed top-0 left-0 w-full z-50 pointer-events-none">
+    <div class="mx-auto max-w-md px-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+        <div class="pointer-events-auto rounded-[18px] bg-white/90 backdrop-blur border border-gray-200 shadow-sm">
+            <div class="px-3 py-3">
+                <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-2 min-w-0">
                     @if($backUrl)
                         <a href="{{ $backUrl }}"
@@ -53,6 +54,7 @@
                             Connexion
                         </a>
                     @endif
+                </div>
                 </div>
             </div>
         </div>
